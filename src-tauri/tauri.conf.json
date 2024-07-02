@@ -12,7 +12,11 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": false,
+      "window": {
+        "show": true,
+        "hide": true
+      }
     },
     "bundle": {
       "active": true,
@@ -56,11 +60,12 @@
     "windows": [
       {
         "fullscreen": true,
-        "height": 400,
+        "height": 600,
         "resizable": false,
         "title": "Ba Hoa Smoker",
         "width": 800,
-        "decorations": false
+        "decorations": false,
+        "visible": false
       }
     ]
   }

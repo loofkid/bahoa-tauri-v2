@@ -5,5 +5,8 @@ export default {
     extend: {},
   },
   plugins: [require('daisyui')], //eslint-disable-line
+  daisyui: {
+    themes: ["light", "dark", "synthwave"],
+  },
 }
 
