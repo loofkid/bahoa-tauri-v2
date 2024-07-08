@@ -60,7 +60,7 @@
     "windows": [
       {
         "fullscreen": true,
-        "height": 600,
+        "height": 480,
         "resizable": false,
         "title": "Ba Hoa Smoker",
         "width": 800,

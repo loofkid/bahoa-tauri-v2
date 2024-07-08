@@ -108,7 +108,7 @@
     <div class="card bg-base-300 shadow-xl">
         <div class="card-body">
             <h2 class="card-title">pid</h2>
-            <button class="btn btn-ghost btn-block flex justify-start h-20" on:click={() => showPIDNumberInput("p")}>
+            <button class="btn btn-ghost btn-block flex justify-start h-28" on:click={() => showPIDNumberInput("p")}>
                 <label class="form-control w-full">
                     <div class="label">
                         <span class="label-text">proportional gain (P)</span>
@@ -116,7 +116,7 @@
                         <input type="text" readonly value={pid.p} class="input input-primary input-bordered" />
                 </label>
             </button>
-            <button class="btn btn-ghost btn-block flex justify-start h-20" on:click={() => showPIDNumberInput("i")}>
+            <button class="btn btn-ghost btn-block flex justify-start h-28" on:click={() => showPIDNumberInput("i")}>
                 <label class="form-control w-full">
                     <div class="label">
                         <span class="label-text">integral gain (I)</span>
@@ -124,7 +124,7 @@
                         <input type="text" readonly value={pid.i} class="input input-primary input-bordered" />
                 </label>
             </button>
-            <button class="btn btn-ghost btn-block flex justify-start h-20" on:click={() => showPIDNumberInput("d")}>
+            <button class="btn btn-ghost btn-block flex justify-start h-28" on:click={() => showPIDNumberInput("d")}>
                 <label class="form-control w-full">
                     <div class="label">
                         <span class="label-text">derivative gain (D)</span>
@@ -137,7 +137,7 @@
     <div class="card bg-base-300 shadow-xl">
         <div class="card-body">
             <div class="card-title">duty cycle</div>
-            <button class="btn btn-ghost btn-block flex justify-start h-20" on:click={() => showDutyCycleNumberInput()}>
+            <button class="btn btn-ghost btn-block flex justify-start h-28" on:click={() => showDutyCycleNumberInput()}>
                 <label class="form-control w-full">
                     <div class="label">
                         <span class="label-text">period (in seconds)</span>

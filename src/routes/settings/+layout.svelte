@@ -9,7 +9,7 @@
     $: splitRoute = $page.route.id!.split("/");
 </script>
 
-<div class="flex flex-col p-4 items-stretch flex-grow">
+<div class="flex flex-col p-4 items-stretch flex-grow overflow-y-hidden">
     <div class="breadcrumbs text-xl">
         <ul>
             {#each splitRoute as segment, i}
@@ -20,7 +20,7 @@
         </ul>
     </div>
     <div class="divider"></div>
-    <div class="flex flex-col flex-grow overflow-y-auto h-96 items-stretch overscroll-y-contain rounded-lg">
+    <div class="flex flex-col flex-grow h-64 items-stretch overscroll-y-contain rounded-lg overflow-y-auto">
         <slot />
     </div>
 </div>

@@ -1,14 +1,14 @@
-import daisyui from 'daisyui'
+import type { Config } from 'tailwindcss';
+import daisyui from 'daisyui';
 
-/** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/**/*.{html,svelte,js,ts}'],
   theme: {
     extend: {},
   },
-  plugins: [daisyui], // eslint-disable-line
+  plugins: [daisyui],
   daisyui: {
     themes: ["light", "dark", "synthwave"],
   },
-}
+} satisfies Config
 

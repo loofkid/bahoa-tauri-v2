@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: theme("colors.base-200") theme("colors.base-content");
+}
+
+/* Chrome, Edge and Safari */
+*::-webkit-scrollbar {
+    height: 5px;
+    width: 5px;
+  }
+  *::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: theme("colors.base-200");
+  }
+  
+  *::-webkit-scrollbar-track:hover {
+    background-color: theme("colors.base-200");
+  }
+  
+  *::-webkit-scrollbar-track:active {
+    background-color: theme("colors.base-200");
+  }
+  
+  *::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background-color: theme("colors.base-300");
+  }
+  
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: theme("colors.base-300");
+  }
+  
+  *::-webkit-scrollbar-thumb:active {
+    background-color: theme("colors.base-300");
+  }
