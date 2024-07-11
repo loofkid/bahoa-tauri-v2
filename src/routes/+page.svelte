@@ -27,6 +27,9 @@
         setTempK: number;
         setTempC: number;
         setTempF: number;
+        avgTempK: number;
+        avgTempC: number;
+        avgTempF: number;
     }
 
     let probes: ProbeData[] = [
@@ -39,6 +42,9 @@
             setTempK: 0.0,
             setTempC: 0.0,
             setTempF: 0.0,
+            avgTempK: 0.0,
+            avgTempC: 0.0,
+            avgTempF: 0.0,
         },
     ];
 
@@ -49,108 +55,36 @@
     onMount(() => {
         const enc = new TextDecoder("utf-8")
 
-        if (socket.connected) {
-            socket.on("probe", async (data) => {
-                const decodedData: ProbeData = JSON.parse(enc.decode(new Uint8Array(data)));
-                // if (readingSkip < 5) {
-                //     readingSkip++;
-                // }
-                // else {
-                //     readingSkip = 0;
-                    // await db.probeReadings.add({
-                    //     probeId: decodedData.id,
-                    //     timestamp: new Date(),
-                    //     temperature: decodedData.tempK,
-                    //     setTemperature: decodedData.setTempK,
-                    // });
-                    // $historicalData = [...$historicalData.filter(r => r.timestamp > dayjs().subtract(30, 'minutes').toDate()), {
-                    //     probeId: decodedData.id,
-                    //     timestamp: new Date(),
-                    //     temperature: decodedData.tempK,
-                    //     setTemperature: decodedData.setTempK,
-                    // }];
-                // }
-                if (probes.find(p => p.id == decodedData.id)) {
-                    probes = probes.map(p => {
-                        if (p.id == decodedData.id) {
-                            return decodedData;
-                        }
-                        return p;
-                    });
-                    return;
-                }
-                else {
-                    probes = [decodedData, ...probes];
-                }
-                probes.sort((a, b) => {
-                    const probeNumber = parseInt(a.id.split("-")[1]);
-                    return probeNumber - parseInt(b.id.split("-")[1]);
-                })
-            });
-
-            socket.on('probeRecords', async (data) => {
-                $historicalData = data.map((d: {timestamp: number, probeId: string, temperature: number, setTemperature: number}) => {
-                    return {
-                        probeId: d.probeId,
-                        timestamp: new Date(d.timestamp),
-                        temperature: d.temperature,
-                        setTemperature: d.setTemperature,
+        socket.on("probe", async (receivedData: ProbeData) => {
+            console.log(receivedData);
+            if (probes.find(p => p.id == receivedData.id)) {
+                probes = probes.map(p => {
+                    if (p.id == receivedData.id) {
+                        return receivedData;
                     }
+                    return p;
                 });
+                return;
+            }
+            else {
+                probes = [receivedData, ...probes];
+            }
+            probes.sort((a, b) => {
+                const probeNumber = parseInt(a.id.split("-")[1]);
+                return probeNumber - parseInt(b.id.split("-")[1]);
             })
-        }
-        else {
-            socket.on("connected", () => {
-                socket.on("probe", async (data) => {
-                    const decodedData: ProbeData = JSON.parse(enc.decode(new Uint8Array(data)));
-                    // if (readingSkip < 5) {
-                    //     readingSkip++;
-                    // }
-                    // else {
-                    //     readingSkip = 0;
-                        // await db.probeReadings.add({
-                        //     probeId: decodedData.id,
-                        //     timestamp: new Date(),
-                        //     temperature: decodedData.tempK,
-                        //     setTemperature: decodedData.setTempK,
-                        // });
-                        // $historicalData = [...$historicalData.filter(r => r.timestamp > dayjs().subtract(30, 'minutes').toDate()), {
-                        //     probeId: decodedData.id,
-                        //     timestamp: new Date(),
-                        //     temperature: decodedData.tempK,
-                        //     setTemperature: decodedData.setTempK,
-                        // }];
-                    // }
-                    if (probes.find(p => p.id == decodedData.id)) {
-                        probes = probes.map(p => {
-                            if (p.id == decodedData.id) {
-                                return decodedData;
-                            }
-                            return p;
-                        });
-                        return;
-                    }
-                    else {
-                        probes = [decodedData, ...probes];
-                    }
-                    probes.sort((a, b) => {
-                        const probeNumber = parseInt(a.id.split("-")[1]);
-                        return probeNumber - parseInt(b.id.split("-")[1]);
-                    })
-                });
+        });
 
-                socket.on('probeRecords', async (data) => {
-                    $historicalData = data.map((d: {timestamp: number, probeId: string, temperature: number, setTemperature: number}) => {
-                        return {
-                            probeId: d.probeId,
-                            timestamp: new Date(d.timestamp),
-                            temperature: d.temperature,
-                            setTemperature: d.setTemperature,
-                        }
-                    });
-                })
+        socket.on('probeRecords', async (data) => {
+            $historicalData = data.map((d: {timestamp: number, probeId: string, temperature: number, setTemperature: number}) => {
+                return {
+                    probeId: d.probeId,
+                    timestamp: new Date(d.timestamp),
+                    temperature: d.temperature,
+                    setTemperature: d.setTemperature,
+                }
             });
-        }
+        });    
     });
 
     beforeNavigate(() => {
@@ -245,17 +179,18 @@
 
 <div class="flex flex-col flex-grow">
     <div class="stats [grid-template-columns:7fr_5fr] flex-grow">
-        <div class="stat bg-base-200 place-items-center place-content-center gap-6">
-            <div class="stat-title">{ probes.find(p => p.id == "probe-0")?.name } temperature</div>
+        <div class="stat place-items-center place-content-center gap-6">
+            <div class="stat-title lowercase">{ probes.find(p => p.id == "probe-0")?.name } temperature</div>
             <div class="stat-value text-8xl">{ probes.find(p => p.id == "probe-0")?.tempF.toFixed(1) } {unit}</div>
             <div>
                 <ProbeChart data={$probe0ChartData} 
                     readingColor="#ef4444"
                     setTempColor="#3b82f6"
+                    timeFrame="10 mins"
                     unit={unit} />
             </div>
         </div>
-        <div class="stat bg-base-200 min-w-full place-items-center place-content-center gap-6">
+        <div class="stat min-w-full place-items-center place-content-center gap-6">
             <div class="stat-desc">set temperature of the smoker</div>
             <div class="stat-value text-5xl flex flex-col justify-center items-center">
                 { probes.find(p => p.id == "probe-0")?.setTempF !== 0.0 ? 

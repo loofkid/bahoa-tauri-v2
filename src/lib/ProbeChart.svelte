@@ -1,8 +1,8 @@
 <script lang="ts">
     import { Line } from "svelte-chartjs";
-    import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, LinearScale, PointElement, CategoryScale } /* preval */ from 'chart.js';
+    import { Chart as ChartJS, SubTitle, Tooltip, Legend, LineElement, LinearScale, PointElement, CategoryScale } /* preval */ from 'chart.js';
 
-    ChartJS.register(Legend, LineElement, LinearScale, PointElement, CategoryScale);
+    ChartJS.register(Legend, SubTitle, LineElement, LinearScale, PointElement, CategoryScale);
 
     export let data: {
         readings: number[];
@@ -15,6 +15,10 @@
     console.log(readingColor, setTempColor)
 
     export let unit: string;
+
+    export let timeFrame: string;
+
+    $: subTitle = `Last ${timeFrame}`
 
     $: timestamps = data ? data.timestamps ?? [] : [];
     $: readings = data ? data.readings ?? [] : [];
@@ -42,7 +46,7 @@
         ],
     }
 </script>
-<div class="bg-base-300">
+<div class="bg-base-200">
     <Line data={chartData} options={{ 
         maintainAspectRatio: false, 
         responsive: true,
@@ -55,14 +59,25 @@
                 },
                 suggestedMax: 250,
                 suggestedMin: 200,
-
+                grid: {
+                    display: false,
+                },
             },
             x: {
                 ticks: {
                     display: false,
-                }
-            }
+                },
+                grid: {
+                    display: false,
+                },
+            },
         },
         animation: false,
+        plugins: {
+            subtitle: {
+                display: true,
+                text: subTitle,
+            },
+        },
     }} />
 </div>
